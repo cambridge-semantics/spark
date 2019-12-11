@@ -30,20 +30,20 @@ private[spark] class TolerationsFeatureStep(
     def build(
       tolerationConf: KubernetesTolerationSpec): Toleration = {
         val newToleration = new TolerationBuilder()
-                              .withNewOperator(tolerationConf.operator.toString)
+                              .withOperator(tolerationConf.operator.toString)
 
         tolerationConf.key match {
-          case Some(i) => newToleration.withNewKey(i)
+          case Some(i) => newToleration.withKey(i)
           case _ =>
         }
 
         tolerationConf.effect match {
-          case Some(i) => newToleration.withNewEffect(i)
+          case Some(i) => newToleration.withEffect(i)
           case _ =>
         }
 
         tolerationConf.value match {
-          case Some(i) => newToleration.withNewValue(i)
+          case Some(i) => newToleration.withValue(i)
           case _ =>
         }
 
