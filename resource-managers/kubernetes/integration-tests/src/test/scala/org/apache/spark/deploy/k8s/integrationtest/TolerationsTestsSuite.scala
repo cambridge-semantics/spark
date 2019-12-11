@@ -27,19 +27,19 @@ private[spark] trait TolerationsTestsSuite { k8sSuite: KubernetesSuite =>
   private def driverTolerations(): List[Toleration] = {
     List(
       new TolerationBuilder()
-        .withNewKey("key0")
-        .withNewOperator("Equal")
-        .withNewEffect("NoSchedule")
-        .withNewValue("value")
+        .withKey("key0")
+        .withOperator("Equal")
+        .withEffect("NoSchedule")
+        .withValue("value")
         .build(),
       new TolerationBuilder()
-        .withNewKey("key1")
-        .withNewOperator("Exists")
-        .withNewEffect("NoExecute")
+        .withKey("key1")
+        .withOperator("Exists")
+        .withEffect("NoExecute")
         .withTolerationSeconds(15)
         .build(),
       new TolerationBuilder()
-        .withNewOperator("Exists")
+        .withOperator("Exists")
         .build()
     )
   }
@@ -47,20 +47,20 @@ private[spark] trait TolerationsTestsSuite { k8sSuite: KubernetesSuite =>
   private def executorTolerations(): List[Toleration] = {
     List(
       new TolerationBuilder()
-        .withNewKey("key2")
-        .withNewOperator("Equal")
-        .withNewEffect("NoSchedule")
-        .withNewValue("value")
+        .withKey("key2")
+        .withOperator("Equal")
+        .withEffect("NoSchedule")
+        .withValue("value")
         .build(),
       new TolerationBuilder()
-        .withNewKey("key3")
-        .withNewOperator("Exists")
-        .withNewEffect("NoExecute")
+        .withKey("key3")
+        .withOperator("Exists")
+        .withEffect("NoExecute")
         .withTolerationSeconds(15)
         .build(),
       new TolerationBuilder()
-        .withNewKey("key4")
-        .withNewOperator("Exists")
+        .withKey("key4")
+        .withOperator("Exists")
         .build()
     )
   }
