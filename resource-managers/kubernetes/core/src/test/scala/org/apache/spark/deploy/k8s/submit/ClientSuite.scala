@@ -111,7 +111,7 @@ class ClientSuite extends SparkFunSuite with BeforeAndAfter {
   private var podOperations: PODS = _
 
   @Mock
-  private var namedPods: PodResource[Pod, DoneablePod] = _
+  private var namedPods: PodResource[Pod] = _
 
   @Mock
   private var loggingPodStatusWatcher: LoggingPodStatusWatcher = _
@@ -142,6 +142,7 @@ class ClientSuite extends SparkFunSuite with BeforeAndAfter {
       Map.empty,
       Map.empty,
       Nil,
+      Nil,
       Seq.empty[String])
     when(driverBuilder.buildFromFeatures(kubernetesConf)).thenReturn(BUILT_KUBERNETES_SPEC)
     when(kubernetesClient.pods()).thenReturn(podOperations)
@@ -151,8 +152,6 @@ class ClientSuite extends SparkFunSuite with BeforeAndAfter {
     createdResourcesArgumentCaptor = ArgumentCaptor.forClass(classOf[HasMetadata])
     when(podOperations.create(FULL_EXPECTED_POD)).thenReturn(POD_WITH_OWNER_REFERENCE)
     when(namedPods.watch(loggingPodStatusWatcher)).thenReturn(mock[Watch])
-    when(loggingPodStatusWatcher.watchOrStop(kubernetesConf.namespace() + ":" + POD_NAME))
-      .thenReturn(true)
     doReturn(resourceList)
       .when(kubernetesClient)
       .resourceList(createdResourcesArgumentCaptor.capture())

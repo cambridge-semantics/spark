@@ -18,7 +18,7 @@ package org.apache.spark.scheduler.cluster.k8s
 
 import org.apache.spark.deploy.k8s.{KubernetesConf, KubernetesExecutorSpecificConf, KubernetesRoleSpecificConf, SparkPod}
 import org.apache.spark.deploy.k8s.features._
-import org.apache.spark.deploy.k8s.features.{BasicExecutorFeatureStep, EnvSecretsFeatureStep, ExecutorKubernetesCredentialsFeatureStep, LocalDirsFeatureStep, MountSecretsFeatureStep}
+import org.apache.spark.deploy.k8s.features.{BasicExecutorFeatureStep, EnvSecretsFeatureStep, ExecutorKubernetesCredentialsFeatureStep, LocalDirsFeatureStep, MountSecretsFeatureStep, TolerationsFeatureStep}
 
 private[spark] class KubernetesExecutorBuilder(
     provideBasicStep: (KubernetesConf [KubernetesExecutorSpecificConf])
@@ -38,7 +38,10 @@ private[spark] class KubernetesExecutorBuilder(
       new LocalDirsFeatureStep(_),
     provideVolumesStep: (KubernetesConf[_ <: KubernetesRoleSpecificConf]
       => MountVolumesFeatureStep) =
-      new MountVolumesFeatureStep(_)) {
+      new MountVolumesFeatureStep(_),
+    provideTolerationsStep: (KubernetesConf[_ <: KubernetesRoleSpecificConf]
+      => TolerationsFeatureStep) =
+      new TolerationsFeatureStep(_)) {
 
   def buildFromFeatures(
     kubernetesConf: KubernetesConf[KubernetesExecutorSpecificConf]): SparkPod = {
@@ -54,9 +57,13 @@ private[spark] class KubernetesExecutorBuilder(
       Seq(provideVolumesStep(kubernetesConf))
     } else Nil
     val credentialsFeature = Seq(provideCredentialsStep(kubernetesConf))
+    val tolerationsFeature = if (kubernetesConf.roleTolerations.nonEmpty) {
+      Seq(provideTolerationsStep(kubernetesConf))
+    } else Nil
 
     val allFeatures =
-      baseFeatures ++ secretFeature ++ secretEnvFeature ++ volumesFeature ++ credentialsFeature
+      baseFeatures ++ secretFeature ++ secretEnvFeature ++ volumesFeature ++ credentialsFeature ++
+        tolerationsFeature
 
     var executorPod = SparkPod.initialPod()
     for (feature <- allFeatures) {
