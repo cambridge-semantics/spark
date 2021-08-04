@@ -111,7 +111,7 @@ class ClientSuite extends SparkFunSuite with BeforeAndAfter {
   private var podOperations: PODS = _
 
   @Mock
-  private var namedPods: PodResource[Pod] = _
+  private var namedPods: PodResource[Pod, DoneablePod] = _
 
   @Mock
   private var loggingPodStatusWatcher: LoggingPodStatusWatcher = _
