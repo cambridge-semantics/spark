@@ -2974,5 +2974,23 @@
     <profile>
       <id>sparkr</id>
     </profile>
+    <profile>
+      <id>csi-repo</id>
+      <repositories>
+        <repository>
+          <id>anzo_mvn_releases</id>
+          <name>anzo_mvn_releases</name>
+          <url>https://artifactory.cambridgesemantics.com/artifactory/anzo_mvn_releases/</url>
+        </repository>
+        <repository>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <id>anzo_mvn_snapshots</id>
+          <name>anzo_mvn_snapshots</name>
+          <url>https://artifactory.cambridgesemantics.com/artifactory/anzo_mvn_snapshots/</url>
+        </repository>
+      </repositories>
+    </profile>
   </profiles>
 </project>

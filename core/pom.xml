@@ -415,7 +415,7 @@
     <dependency>
       <groupId>com.cambridgesemantics.log4j12</groupId>
       <artifactId>log4j-json-layout</artifactId>
-      <version>1.0.0</version>
+      <version>[1.0.0,2.0.0)</version>
     </dependency>
 
   </dependencies>
