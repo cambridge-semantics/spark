@@ -113,6 +113,8 @@ private[spark] class BasicDriverFeatureStep(
         .endResources()
       .build()
 
+    val securityContext = new PodSecurityContextBuilder().withRunAsUser(1000L).build;
+
     val driverPod = new PodBuilder(pod.pod)
       .editOrNewMetadata()
         .withName(driverPodName)
@@ -120,6 +122,7 @@ private[spark] class BasicDriverFeatureStep(
         .addToAnnotations(conf.roleAnnotations.asJava)
         .endMetadata()
       .withNewSpec()
+        .withSecurityContext(securityContext)
         .withRestartPolicy("Never")
         .withNodeSelector(conf.nodeSelector().asJava)
         .addToImagePullSecrets(conf.imagePullSecrets(): _*)
